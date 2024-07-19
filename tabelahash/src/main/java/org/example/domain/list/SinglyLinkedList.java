@@ -1,5 +1,7 @@
 package org.example.domain.list;
 
+import org.example.exceptions.NodeNotFoundException;
+
 public class SinglyLinkedList<T> {
     private Node<T> inicio;
 
@@ -29,7 +31,7 @@ public class SinglyLinkedList<T> {
             previousNode = currentNode;
             currentNode = currentNode.getProximo();
         }
-        previousNode.setProximo(currentNode);
+        previousNode.setProximo(new Node<>(data));
     }
 
     public Node<T> get(T reference) {
@@ -41,7 +43,7 @@ public class SinglyLinkedList<T> {
             }
             currentNode = currentNode.getProximo();
         }
-        return null;
+        throw new NodeNotFoundException();
     }
 
     public Node<T> getNodeByString(String reference) {
@@ -74,6 +76,21 @@ public class SinglyLinkedList<T> {
         }
 
         previousNode.setProximo(currentNode.getProximo());
+    }
+
+    public String listNodeData() {
+        StringBuilder stringBuilder = new StringBuilder();
+        var currentNode = getInicio();
+
+        stringBuilder.append("[");
+        while (currentNode != null) {
+            stringBuilder.append(currentNode.getData());
+            currentNode = currentNode.getProximo();
+
+            if (currentNode != null) {stringBuilder.append(",");}
+        }
+        stringBuilder.append("]");
+        return stringBuilder.toString();
     }
 
     private Node<T> getPreviousNodeByReference(T value) {

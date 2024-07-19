@@ -27,6 +27,6 @@ public class Aluno {
 
     @Override
     public String toString() {
-        return "\'" + matricula + "\': " + nome;
+        return "'" + matricula + "':" +  "'" + nome + "'";
     }
 }

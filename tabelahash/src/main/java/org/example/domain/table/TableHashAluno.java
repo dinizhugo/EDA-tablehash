@@ -3,8 +3,9 @@ package org.example.domain.table;
 import org.example.domain.Aluno;
 import org.example.domain.list.Node;
 import org.example.domain.list.SinglyLinkedList;
+import org.example.exceptions.AlunoAlreadyExistException;
+import org.example.exceptions.AlunoNotFoundException;
 
-import java.util.Arrays;
 
 public class TableHashAluno {
     private int size;
@@ -49,26 +50,44 @@ public class TableHashAluno {
         var aluno = getAlunoByMatricula(matricula);
 
         if (aluno != null) {
-            return;
+            throw new AlunoAlreadyExistException(matricula);
         }
 
         list[pos].add(new Aluno(matricula, nome));
     }
+
 
     public void removeAluno(String matricula) {
         int pos = calculateHashWithMod(matricula);
         var aluno = getAlunoByMatricula(matricula);
 
         if (aluno == null) {
-            return;
+            throw new AlunoNotFoundException(matricula);
         }
 
         list[pos].remove(aluno);
     }
 
+    public String getAlunos() {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        for (int i = 0; i < list.length; i++) {
+            stringBuilder.append(i).append(" = ").append("{");
+            stringBuilder.append(list[i].listNodeData());
+            stringBuilder.append("}").append("\n");
+        }
+        return stringBuilder.toString();
+    }
+
     public int calculateHashWithMod(String input) {
         int hash = customHash(input);
         return Math.abs(hash%size);
+    }
+
+    public void insertAlunosAsList(Aluno[] alunos) {
+        for (Aluno aluno: alunos) {
+            insertAluno(aluno.getMatricula(), aluno.getNome());
+        }
     }
 
     private int customHash(String txt) {
