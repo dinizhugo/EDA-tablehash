@@ -16,7 +16,6 @@ public class SinglyLinkedList<T> {
     }
 
 
-
     public void add(T data) {
         if (getInicio() == null) {
             this.inicio = new Node<>(data);
@@ -45,7 +44,28 @@ public class SinglyLinkedList<T> {
         return null;
     }
 
+    public Node<T> getNodeByString(String reference) {
+        Node<T> currentNode = inicio;
+
+        while (currentNode != null) {
+            if (currentNode.getData().toString().contains(reference)) {
+                return currentNode;
+            }
+            currentNode = currentNode.getProximo();
+        }
+        return null;
+    }
+
     public void remove(T value) {
+        if (inicio == null) {
+            return;
+        }
+
+        if (inicio.getData().equals(value)) {
+            inicio = inicio.getProximo();
+            return;
+        }
+
         var currentNode = get(value);
         var previousNode = getPreviousNodeByReference(value);
 
@@ -53,9 +73,7 @@ public class SinglyLinkedList<T> {
             return;
         }
 
-        var tempNode = currentNode.getProximo();
-        previousNode.setProximo(tempNode);
-        currentNode = null;
+        previousNode.setProximo(currentNode.getProximo());
     }
 
     private Node<T> getPreviousNodeByReference(T value) {
